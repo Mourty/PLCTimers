@@ -5,7 +5,7 @@ This is a timer library for Arduino that provides Timer On Delay (TON), Timer Of
 I want to note that I'm not a professional programmer. I'm sure this shows in the code, but I was working on something for class and wanted to make it public. This is a very basic library mainly made for my own use, but maybe someone else will like it. I hope it works for you, and I hope you find it useful.
 <br/>
 
-##Installation
+## Installation
 ### I. Using Arduino Library Manager (Hopefully)
 Search for **PLCTimer** in the Arduino Library Manager and install the latest version.
 
@@ -18,7 +18,7 @@ If you would like to install manually, you can follow these steps:
 
 <br/>
 
-##API Reference
+## API Reference
 
 void updateTimers(timer *timers, int numberofTimers); - Updates multiple timers.
 void updateTimer(timer *timer; - Updates one timer.
@@ -36,8 +36,11 @@ TIMER_TYPE - Enum defining timer types:
 
 The behavior of the timers are based on Allen Bradley timer behavior and names. Below you can find links to what I referenced to do this.
 https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/contents-ditamap/instructions/instruction-set/timer-and-counter-instructions/timer-on-delay--ton-.html
+
 https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/contents-ditamap/instructions/instruction-set/timer-and-counter-instructions/timer-off-delay--tof-.html
+
 https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/contents-ditamap/instructions/instruction-set/timer-and-counter-instructions/retentive-timer-on--rto-.html
+
 https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/contents-ditamap/instructions/instruction-set/timer-and-counter-instructions/reset--res-.html
 
 <br/>
