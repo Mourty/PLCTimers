@@ -19,12 +19,15 @@ If you would like to install manually, you can follow these steps:
 <br/>
 
 ## API Reference
+Functions: 
 
-void updateTimers(timer *timers, int numberofTimers); - Updates multiple timers.
-void updateTimer(timer *timer; - Updates one timer.
+	void updateTimers(timer *timers, int numberofTimers); - Updates multiple timers.
 
-void resetTimers(timer *timer int numberofTimers); - Resets multiple specific timers.
-void resetTimer(timer *timer); - Resets a specific timer.
+	void updateTimer(timer *timer; - Updates one timer.
+
+	void resetTimers(timer *timer int numberofTimers); - Resets multiple specific timers.
+
+	void resetTimer(timer *timer); - Resets a specific timer.
 
 TIMER_TYPE - Enum defining timer types:
 
@@ -45,6 +48,6 @@ https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/
 
 <br/>
 
-##License
+## License
 This library is licensed under the MIT license. Basically, freely use how you want, just attribute.
 
