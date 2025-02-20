@@ -1,0 +1,42 @@
+/*
+This example showcases how a Timer On Delay (TON) works. Typical operation is if the timer enable (EN) bit is on,
+ the accumulated time (ACC) begins counting up This will set the Timer Timing (TT) bit. If ACC is equal to the preset (PRE) value,
+ the time stops counting up, and sets the done bit (DN). The ACC value is reset to 0 if EN is turned off. 
+ If you want it to keep it, check the RTO type.
+ In this example we are using the built in LED. We are flasing it on and off with 1 second on, and 1 second off.
+
+*/
+#include <PLCTimer.h>
+
+int LED = LED_BUILTIN;
+const int numberofTimers = 2;
+timer T[numberofTimers];
+
+void setup() {
+  pinMode(LED, OUTPUT);
+
+  T[0].PRE = 1000;
+  T[0].type = TON;
+  T[0].EN = true;
+
+  T[1].PRE = 1000;
+  T[1].type = TON;
+}
+
+void loop() {
+  updateTimers(T, numberofTimers);
+
+  if (T[0].TT) {
+    digitalWrite(LED, true);
+    T[1].EN = false;
+  } else {
+    T[1].EN = true;
+  }
+
+  if (T[1].TT) {
+    digitalWrite(LED, false);
+    T[0].EN = false;
+  } else {
+    T[0].EN = true;
+  }
+}

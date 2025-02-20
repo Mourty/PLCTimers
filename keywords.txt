@@ -1,0 +1,14 @@
+# Datatypes
+TIMER_TYPE	KEYWORD1
+TIMER	KEYWORD1
+
+# Constants
+TON	KEYWORD2
+TOF	KEYWORD2
+RTO	KEYWORD2
+
+# Functions
+updateTimers	FUNCTION
+updateTimer	FUNCTION
+resetTimers	FUNCTION
+resetTimer	FUNCTION
