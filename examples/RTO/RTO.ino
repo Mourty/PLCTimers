@@ -8,6 +8,10 @@ the timer must be passed by reference using the & symbol just before it.
 In this example we are turning off the built in LED after a button connected between pin 3 and ground is pressed
 for a cumulative total of 2 seconds. if the button is held down for a consecutive 5 seconds the LED will turn back
 off. The button must be released for the second timer to reset. This allows for the cycle to continue.
+I modeled the operation of the RTO after Allen Bradley PLC Timers. Link below
+https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/contents-ditamap/instructions/instruction-set/timer-and-counter-instructions/retentive-timer-on--rto-.html
+I did the same for the reset function.
+https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/contents-ditamap/instructions/instruction-set/timer-and-counter-instructions/reset--res-.html
 
 */
 #include <PLCTimer.h>

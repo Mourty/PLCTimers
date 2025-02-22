@@ -3,7 +3,9 @@ This example showcases how a Timer On Delay (TON) works. Typical operation is if
  the accumulated time (ACC) begins counting up This will set the Timer Timing (TT) bit. If ACC is equal to the preset (PRE) value,
  the time stops counting up, and sets the done bit (DN). The ACC value is reset to 0 if EN is turned off. 
  If you want it to keep it, check the RTO type.
- In this example we are using the built in LED. We are flasing it on and off with 1 second on, and 1 second off.
+ In this example we are using the built in LED. We are flashing it on and off with 1 second on, and 1 second off.
+ I modeled the operation of the TON after Allen Bradley PLC Timers. Link below
+ https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/contents-ditamap/instructions/instruction-set/timer-and-counter-instructions/timer-on-delay--ton-.html
 
 */
 #include <PLCTimer.h>
