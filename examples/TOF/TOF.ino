@@ -12,26 +12,21 @@ https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/
 
 int LED = LED_BUILTIN;
 const int buttonPin = 3;
-timer T;
+Timer T(TOF,1000);
 
 void setup() {
   pinMode(LED, OUTPUT);
   pinMode(buttonPin, INPUT_PULLUP);
-
-  T.PRE = 1000;
-  T.type = TOF;
 }
 
 void loop() {
-  updateTimer(&T);
-
   if (digitalRead(buttonPin)) {
-    T.EN = true;
+    T.EN(true);
   } else {
-    T.EN = false;
+    T.EN(false);
   }
 
-  if (T.DN) {
+  if (T.DN()) {
     digitalWrite(LED, true);
   } else {
     digitalWrite(LED, false);

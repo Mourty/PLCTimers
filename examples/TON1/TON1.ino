@@ -8,37 +8,37 @@ This example showcases how a Timer On Delay (TON) works. Typical operation is if
  https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/contents-ditamap/instructions/instruction-set/timer-and-counter-instructions/timer-on-delay--ton-.html
 
 */
-#include <PLCTimer.h>
 
+#include <PLCTimer.h>
+unsigend long millitime = millis();
+unssigned long microtime = micros();
 int LED = LED_BUILTIN;
 const int numberofTimers = 2;
-timer T[numberofTimers];
+Timer T[numberofTimers];
 
 void setup() {
   pinMode(LED, OUTPUT);
+  // using the constructor for multiple settings
+  T[0] = Timer(TON,1000,true);
 
-  T[0].PRE = 1000;
-  T[0].type = TON;
-  T[0].EN = true;
-
-  T[1].PRE = 1000;
-  T[1].type = TON;
+  // using individual setters
+  T[1].PRE(1000);
+  T[1].type(TON);
 }
 
 void loop() {
-  updateTimers(T, numberofTimers);
 
-  if (T[0].TT) {
+  if (T[0].TT()) {
     digitalWrite(LED, true);
-    T[1].EN = false;
+    T[1].EN(false);
   } else {
-    T[1].EN = true;
+    T[1].EN(true);
   }
 
-  if (T[1].TT) {
+  if (T[1].TT()) {
     digitalWrite(LED, false);
-    T[0].EN = false;
+    T[0].EN(false);
   } else {
-    T[0].EN = true;
+    T[0].EN(true);
   }
 }

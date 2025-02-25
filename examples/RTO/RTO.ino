@@ -19,41 +19,36 @@ https://www.rockwellautomation.com/en-ca/docs/factorytalk-design-studio/current/
 int LED = LED_BUILTIN;
 const int buttonPin = 3;
 const int numberofTimers = 2;
-timer T[numberofTimers];
+Timer T[numberofTimers];
 
 void setup() {
   pinMode(LED, OUTPUT);
   pinMode(buttonPin, INPUT_PULLUP);
 
-  T[0].PRE = 2000;
-  T[0].type = RTO;
-
-  T[1].PRE = 5000;
-  T[1].type = TON;
+  T[0] = Timer(RTO,2000);
+  T[1] = Timer(TON, 5000);
 }
 
 void loop() {
-  updateTimers(T, numberofTimers);
-
   if (digitalRead(buttonPin)) {
-    T[0].EN = true;
+    T[0].EN(true);
   } else {
-    T[0].EN = false;
+    T[0].EN(false);
   }
 
-  if (T[0].DN) {
+  if (T[0].DN()) {
     digitalWrite(LED, true);
   } else {
     digitalWrite(LED, false);
   }
 
   if (digitalRead(buttonPin)) {
-    T[1].EN = true;
+    T[1].EN(true);
   } else {
-    T[1].EN = false;
+    T[1].EN(false);
   }
 
-  if (T[1].DN) {
-    resetTimer(&T[0]);
+  if (T[1].DN()) {
+    T[0].resetTimer();
   }
 }
