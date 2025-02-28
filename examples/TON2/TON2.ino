@@ -10,7 +10,7 @@ int LED1 = 13;
 int LED2 = 12;
 int LED3 = 11;
 int LED4 = 10;
-Timer T(TON,4000,true);
+Timer T(TON, 4000, true);
 
 void setup() {
   pinMode(LED1, OUTPUT);
@@ -22,30 +22,30 @@ void setup() {
 void loop() {
 
 
-if (T.DN()){
-  T.resetTimer();
-}
-if (T.ACC() >= 0 && T.ACC() <1000){
-  digitalWrite(LED1, true);
-}else{
-  digitalWrite(LED1, false);
-}
+  if (T.DN()) {
+    T.resetTimer();
+  }
+  if (T.ACC() >= 0 && T.ACC() < 1000) {
+    digitalWrite(LED1, true);
+  } else {
+    digitalWrite(LED1, false);
+  }
 
-if (T.ACC() >= 1001 && T.ACC() <2000){
-  digitalWrite(LED2, true);
-}else{
-  digitalWrite(LED2, false);
-}
+  if (T.ACC() >= 1001 && T.ACC() < 2000) {
+    digitalWrite(LED2, true);
+  } else {
+    digitalWrite(LED2, false);
+  }
 
-if (T.ACC() >= 2001 && T.ACC() <3000){
-  digitalWrite(LED3, true);
-}else{
-  digitalWrite(LED3, false);
-}
+  if (T.ACC() >= 2001 && T.ACC() < 3000) {
+    digitalWrite(LED3, true);
+  } else {
+    digitalWrite(LED3, false);
+  }
 
-if (T.ACC()>= 3001 && T.ACC() <4000){
-  digitalWrite(LED4, true);
-}else{
-  digitalWrite(LED4, false);
-}
+  if (T.ACC() >= 3001 && T.ACC() < 4000) {
+    digitalWrite(LED4, true);
+  } else {
+    digitalWrite(LED4, false);
+  }
 }

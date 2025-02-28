@@ -1,0 +1,70 @@
+/* PLCTimers 2.0.0
+
+There are 2 types of timers: Timer and MicroTimer
+Timer keeps track of time using millis(); This means all time values associated with it
+are in milliseconds (1/1000 of a second.)
+
+MicroTimer keeps track of time using micros(); This means all time values associated with
+it are in microseconds (1/1000000 of a second.)
+
+There are 3 types of time keeping. Timer On Delay (TON), Timer Off Delay (TOF), and Retentive Timer On(RTO).
+
+Both timers have the same basic structure. They both have the following data
+
+Name			Alias	Data Type		Read/Write	Description
+type					TIMER_TYPE		R/W			This is what kind of timer TON (0), TOF (1), or RTO(2)
+startTime				unsigned long	R			This stores the millis/micros time for when the timer started
+preset			PRE		unsinged long	R/W			This stores the amount of time that needs to elapse for the timer to be done.
+accumulated		ACC		unsigned long	R			This stores how much time has accumulated since the time started timing.
+enable			EN		bool			R/W			This flag signifies if the timer is enabled or not.
+timer timing	TT		bool			R			This flag signifies if the timer is currently running.
+done			DN		bool			R			This flag signifies if a timer is done or not.
+
+* note that you can read/write all the data, but the ones not labeled with W will be over written by the timer's logic.
+ */
+/* Functions
+All data listed above can be Read or written to in the following way
+lets say we want to make a timer with the name of myTimer
+You have 4 options. */
+Timer myTimer;
+Timer myTimer();
+Timer myTimer(TON, 1000); // Create a TON timer with a preset of 1000ms
+Timer myTimer(TOF, 2500, 1)// Creates a TOF timer with a preset of 2500ms and turn its on
+// You can use a number in place of the type, 0 for TON, 1 for TOF, and 2 for RTO. You can also use true/false instead of 1/0 for any bool
+//The same stuff goes for micro timers
+MicroTimer myTimer(TON, 1000); // Create a TON timer with a preset of 1000us
+
+//You can create arrays of timers too
+Timer myTimerArray[10] = Timer(TON,1000) // Create an array of 10 timers, all set to TON with 1000ms presets.
+// Lets say I wanted to modify these timers
+initializeTimers(myTimerArray,10,TON,250); // changed all 10 timers in myTimerArray to TON and 250ms.
+// you can do the same with initializeMicroTimers to an array of MicroTimers
+
+//Now on to using the timers
+
+//Read
+myTimer.DN(); // This will return a bool. The timer will be updated when called.
+myTimer.done(); // This will do the same as above, it is just an alias
+
+myTimer.ACC(); // will return an unsigned long of the accumulated time.
+myTimer.accumulated(); // same as above
+
+//Writing
+myTimer.PRE(1000); // sets the timer to 1000 units, for millis that is 1000ms, micros is 1000us.
+myTimer.preset(1000); //same as above
+
+//Hopefully this covered enough. There are examples included as well. I hope this was enough, but if you have issues reach out
+//via GitHub, or email me. My email address is in the properties file.
+
+
+
+//Advanced usage
+//If you would like the timers to be resistant to the roll over effects of millis and micros
+//you can install my ExtendedTime library. There are special compiler flags to automatically make use of it
+// https://github.com/Mourty/ExtendedTime
+
+//This will cause the startTime data to be stored as an unsigned long long. The PRE and ACC values will remain unaffected.
+//If you want the PRE and ACC values to also be stored as unsigned long long, simply add the following line to the top
+//of your program.
+#define FORCE_ULL 1
+//This will enable a compiler flag that will make this change.

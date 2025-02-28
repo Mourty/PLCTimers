@@ -10,24 +10,23 @@ This example showcases how a Timer On Delay (TON) works. Typical operation is if
 */
 
 #include <PLCTimer.h>
-unsigend long millitime = millis();
-unssigned long microtime = micros();
+
 int LED = LED_BUILTIN;
 const int numberofTimers = 2;
 Timer T[numberofTimers];
 
+
 void setup() {
   pinMode(LED, OUTPUT);
   // using the constructor for multiple settings
-  T[0] = Timer(TON,1000,true);
-
+  T[0] = Timer(TON, 1000);
   // using individual setters
+  T[0].EN(true);
   T[1].PRE(1000);
   T[1].type(TON);
 }
 
 void loop() {
-
   if (T[0].TT()) {
     digitalWrite(LED, true);
     T[1].EN(false);
