@@ -11,14 +11,14 @@ There are 3 types of time keeping. Timer On Delay (TON), Timer Off Delay (TOF), 
 
 Both timers have the same basic structure. They both have the following data
 
-Name			Alias	Data Type		Read/Write	Description
-type					TIMER_TYPE		R/W			This is what kind of timer TON (0), TOF (1), or RTO(2)
-startTime				unsigned long	R			This stores the millis/micros time for when the timer started
-preset			PRE		unsinged long	R/W			This stores the amount of time that needs to elapse for the timer to be done.
-accumulated		ACC		unsigned long	R			This stores how much time has accumulated since the time started timing.
-enable			EN		bool			R/W			This flag signifies if the timer is enabled or not.
-timer timing	TT		bool			R			This flag signifies if the timer is currently running.
-done			DN		bool			R			This flag signifies if a timer is done or not.
+Name			    Alias	    Data Type		  Read/Write	Description
+type					          TIMER_TYPE		R/W			    This is what kind of timer TON (0), TOF (1), or RTO(2)
+startTime				        unsigned long	R			      This stores the millis/micros time for when the timer started
+preset			  PRE		    unsinged long	R/W			    This stores the amount of time that needs to elapse for the timer to be done.
+accumulated	  ACC		    unsigned long	R			      This stores how much time has accumulated since the time started timing.
+enable			  EN		    bool			    R/W			    This flag signifies if the timer is enabled or not.
+timer timing	TT		    bool			    R			      This flag signifies if the timer is currently running.
+done			    DN		    bool			    R			      This flag signifies if a timer is done or not.
 
 * note that you can read/write all the data, but the ones not labeled with W will be over written by the timer's logic.
  */
