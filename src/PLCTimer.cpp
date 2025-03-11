@@ -331,6 +331,17 @@ void Timer::handleRTOUpdate(TimerStartTimeDataType currentTime)
     timerTiming_V = true;
 }
 
+#if USE_EXTENDED_TIME
+TimerStartTimeDataType Timer::getTime()
+{
+    return extendedMillis();
+}
+
+TimerStartTimeDataType MicroTimer::getTime()
+{
+    return extendedMicros();
+}
+#else
 TimerStartTimeDataType Timer::getTime()
 {
     return millis();
@@ -340,6 +351,8 @@ TimerStartTimeDataType MicroTimer::getTime()
 {
     return micros();
 }
+#endif
+
 // Update a single timer based on the current time
 void Timer::updateTimer()
 {
