@@ -61,35 +61,35 @@ class Timer
 
     // Getters and Setters, also has aliases
     void PRE(TimerOtherTimeDataType value);
-    TimerOtherTimeDataType PRE() const;
+    TimerOtherTimeDataType PRE();
     void preset(TimerOtherTimeDataType value);
-    TimerOtherTimeDataType preset() const;
+    TimerOtherTimeDataType preset();
 
     void ACC(TimerOtherTimeDataType value);
-    TimerOtherTimeDataType ACC() const;
+    TimerOtherTimeDataType ACC();
     void accumulated(TimerOtherTimeDataType value);
-    TimerOtherTimeDataType accumulated() const;
+    TimerOtherTimeDataType accumulated();
 
     void EN(bool value);
-    bool EN() const;
+    bool EN();
     void enable(bool value);
-    bool enable() const;
+    bool enable();
 
     void TT(bool value);
-    bool TT() const;
+    bool TT();
     void timerTiming(bool value);
-    bool timerTiming() const;
+    bool timerTiming();
 
     void DN(bool value);
-    bool DN() const;
+    bool DN();
     void done(bool value);
-    bool done() const;
+    bool done();
 
     void startTime(TimerStartTimeDataType value);
-    TimerStartTimeDataType startTime() const;
+    TimerStartTimeDataType startTime();
 
     void type(TIMER_TYPE value);
-    TIMER_TYPE type() const;
+    TIMER_TYPE type();
 
     // helper functions
     void resetTimer();

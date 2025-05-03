@@ -25,27 +25,23 @@ void setup() {
   pinMode(LED, OUTPUT);
   pinMode(buttonPin, INPUT_PULLUP);
 
-  T[0] = Timer(RTO,2000);
+  T[0] = Timer(RTO, 2000);
   T[1] = Timer(TON, 5000);
 }
 
 void loop() {
   if (digitalRead(buttonPin)) {
-    T[0].EN(true);
-  } else {
     T[0].EN(false);
+    T[1].EN(false);
+  } else {
+    T[0].EN(true);
+    T[1].EN(true);
   }
 
   if (T[0].DN()) {
     digitalWrite(LED, true);
   } else {
     digitalWrite(LED, false);
-  }
-
-  if (digitalRead(buttonPin)) {
-    T[1].EN(true);
-  } else {
-    T[1].EN(false);
   }
 
   if (T[1].DN()) {

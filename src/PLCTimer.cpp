@@ -137,7 +137,7 @@ void Timer::PRE(TimerOtherTimeDataType value)
     preset_V = value;
 }
 
-TimerOtherTimeDataType Timer::PRE() const
+TimerOtherTimeDataType Timer::PRE()
 {
     updateTimer();
     return preset_V;
@@ -148,7 +148,7 @@ void Timer::preset(TimerOtherTimeDataType value)
     PRE(value);
 }
 
-TimerOtherTimeDataType Timer::preset() const
+TimerOtherTimeDataType Timer::preset()
 {
     updateTimer();
     return PRE();
@@ -159,7 +159,7 @@ void Timer::ACC(TimerOtherTimeDataType value)
     accumulated_V = value;
 }
 
-TimerOtherTimeDataType Timer::ACC() const
+TimerOtherTimeDataType Timer::ACC()
 {
     updateTimer();
     return accumulated_V;
@@ -170,7 +170,7 @@ void Timer::accumulated(TimerOtherTimeDataType value)
     ACC(value);
 }
 
-TimerOtherTimeDataType Timer::accumulated() const
+TimerOtherTimeDataType Timer::accumulated()
 {
     updateTimer();
     return ACC();
@@ -181,7 +181,7 @@ void Timer::EN(bool value)
     enable_V = value;
 }
 
-bool Timer::EN() const
+bool Timer::EN()
 {
     updateTimer();
     return enable_V;
@@ -192,7 +192,7 @@ void Timer::enable(bool value)
     EN(value);
 }
 
-bool Timer::enable() const
+bool Timer::enable()
 {
     updateTimer();
     return EN();
@@ -203,7 +203,7 @@ void Timer::TT(bool value)
     timerTiming_V = value;
 }
 
-bool Timer::TT() const
+bool Timer::TT()
 {
     updateTimer();
     return timerTiming_V;
@@ -214,7 +214,7 @@ void Timer::timerTiming(bool value)
     TT(value);
 }
 
-bool Timer::timerTiming() const
+bool Timer::timerTiming()
 {
     updateTimer();
     return TT();
@@ -225,7 +225,7 @@ void Timer::DN(bool value)
     done_V = value;
 }
 
-bool Timer::DN() const
+bool Timer::DN()
 {
     updateTimer();
     return done_V;
@@ -236,7 +236,7 @@ void Timer::done(bool value)
     DN(value);
 }
 
-bool Timer::done() const
+bool Timer::done()
 {
     updateTimer();
     return DN();
@@ -247,7 +247,7 @@ void Timer::startTime(TimerStartTimeDataType value)
     startTime_V = value;
 }
 
-TimerStartTimeDataType Timer::startTime() const
+TimerStartTimeDataType Timer::startTime()
 {
     updateTimer();
     return startTime_V;
@@ -258,7 +258,7 @@ void Timer::type(TIMER_TYPE value)
     type_V = value;
 }
 
-TIMER_TYPE Timer::type() const
+TIMER_TYPE Timer::type()
 {
     updateTimer();
     return type_V;
