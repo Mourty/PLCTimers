@@ -15,34 +15,12 @@
   You should have received a copy of the GNU Lesser General Public License
   along with this library; if not, see <https://www.gnu.org/licenses/>.
 */
+
+#pragma once
+#include "PLCTimerConfig.h"
+
 #ifndef PLCTIMER_H
 #define PLCTIMER_H
-
-#include <Arduino.h>
-
-#ifndef FORCE_ULL
-#define FORCE_ULL 0
-#endif
-
-// Support for my ExtenedTime Library
-// This changes data types on compile based on if you have the lib included.
-// If you have FORCE_ULL enabled, all the unsigned long data types will be
-// unsigned long long type instead.
-#ifdef __has_include
-#if __has_include("ExtendedTime.h")
-#define USE_EXTENDED_TIME 1
-typedef unsigned long long TimerStartTimeDataType;
-#else
-#define USE_EXTENDED_TIME 0
-typedef unsigned long TimerStartTimeDataType;
-#endif
-#endif
-
-#if USE_EXTENDED_TIME && FORCE_ULL
-typedef unsigned long long TimerOtherTimeDataType;
-#else
-typedef unsigned long TimerOtherTimeDataType;
-#endif
 
 typedef enum
 {
@@ -56,19 +34,20 @@ class Timer
   public:
     // Single Timer constructors
     Timer();
-    Timer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime);
-    Timer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime, bool enableTimer);
+    Timer(TIMER_TYPE timerType, TimerTimeDataType presetTime);
+    Timer(TIMER_TYPE timerType, TimerTimeDataType presetTime, bool enableTimer);
+    Timer(TIMER_TYPE timerType, TimerTimeDataType presetTime, bool enableTimer, bool autoUpdate);
 
     // Getters and Setters, also has aliases
-    void PRE(TimerOtherTimeDataType value);
-    TimerOtherTimeDataType PRE();
-    void preset(TimerOtherTimeDataType value);
-    TimerOtherTimeDataType preset();
+    void PRE(TimerTimeDataType value);
+    TimerTimeDataType PRE();
+    void preset(TimerTimeDataType value);
+    TimerTimeDataType preset();
 
-    void ACC(TimerOtherTimeDataType value);
-    TimerOtherTimeDataType ACC();
-    void accumulated(TimerOtherTimeDataType value);
-    TimerOtherTimeDataType accumulated();
+    void ACC(TimerTimeDataType value);
+    TimerTimeDataType ACC();
+    void accumulated(TimerTimeDataType value);
+    TimerTimeDataType accumulated();
 
     void EN(bool value);
     bool EN();
@@ -85,32 +64,38 @@ class Timer
     void done(bool value);
     bool done();
 
-    void startTime(TimerStartTimeDataType value);
-    TimerStartTimeDataType startTime();
+    void startTime(TimerTimeDataType value);
+    TimerTimeDataType startTime();
 
     void type(TIMER_TYPE value);
     TIMER_TYPE type();
 
+    void autoUpdate(bool value);
+    bool autoUpdate();
+
     // helper functions
     void resetTimer();
-    void resetTimers(Timer *timers, int numTimers);
-
+    void updateTimer();
+    
+    //TimerTimeDataType getTime();
   protected:
-    TimerStartTimeDataType startTime_V;
-    TimerOtherTimeDataType preset_V;
-    TimerOtherTimeDataType accumulated_V;
+    TimerTimeDataType startTime_V;
+    TimerTimeDataType preset_V;
+    TimerTimeDataType accumulated_V;
     bool enable_V;
     bool timerTiming_V;
     bool done_V;
     TIMER_TYPE type_V;
+    bool autoUpdate_V;
     // protected helper functions
-    void updateTimer();
-    void handleTimerReset(TimerStartTimeDataType currentTime);
-    bool isTimerDone(TimerStartTimeDataType currentTime);
-    void handleTONUpdate(TimerStartTimeDataType currentTime);
-    void handleTOFUpdate(TimerStartTimeDataType currentTime);
-    void handleRTOUpdate(TimerStartTimeDataType currentTime);
-    virtual TimerStartTimeDataType getTime();
+
+    void handleTimerReset(TimerTimeDataType currentTime);
+    void handleUpdateTimer(TimerTimeDataType currentTime);
+    bool isTimerDone(TimerTimeDataType currentTime);
+    void handleTONUpdate(TimerTimeDataType currentTime);
+    void handleTOFUpdate(TimerTimeDataType currentTime);
+    void handleRTOUpdate(TimerTimeDataType currentTime);
+    virtual TimerTimeDataType getTime();
 };
 
 class MicroTimer : public Timer
@@ -118,22 +103,26 @@ class MicroTimer : public Timer
   public:
     // Single Timer constructors
     MicroTimer();
-    MicroTimer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime);
-    MicroTimer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime, bool enableTimer);
+    MicroTimer(TIMER_TYPE timerType, TimerTimeDataType presetTime);
+    MicroTimer(TIMER_TYPE timerType, TimerTimeDataType presetTime, bool enableTimer);
+    MicroTimer(TIMER_TYPE timerType, TimerTimeDataType presetTime, bool enableTimer, bool autoUpdate);
 
   protected:
-    TimerStartTimeDataType getTime() override;
+    TimerTimeDataType getTime();
 };
-
 // Timer arrays constructors
 void initializeTimers(Timer timers[], int numTimers);
-void initializeTimers(Timer timers[], int numTimers, TIMER_TYPE timerType, TimerOtherTimeDataType presetTime);
-void initializeTimers(Timer timers[], int numTimers, TIMER_TYPE timerType, TimerOtherTimeDataType presetTime,
+void initializeTimers(Timer timers[], int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime);
+void initializeTimers(Timer timers[], int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime,
                       bool enableTimer);
+void initializeTimers(Timer timers[], int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime,
+                      bool enableTimer, bool autoUpdate);
+
 // MicroTimer arrays constructors
 void initializeMicroTimers(MicroTimer timers[], int numTimers);
-void initializeMicroTimers(MicroTimer timers[], int numTimers, TIMER_TYPE timerType,
-                           TimerOtherTimeDataType presetTime);
-void initializeMicroTimers(MicroTimer timers[], int numTimers, TIMER_TYPE timerType, TimerOtherTimeDataType presetTime,
+void initializeMicroTimers(MicroTimer timers[], int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime);
+void initializeMicroTimers(MicroTimer timers[], int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime,
                            bool enableTimer);
+void initializeMicroTimers(MicroTimer timers[], int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime,
+                           bool enableTimer, bool autoUpdate);
 #endif // PLCTIMER_H

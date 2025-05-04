@@ -17,7 +17,6 @@
 */
 
 #include "PLCTimer.h"
-#include <Arduino.h>
 
 // Single Timer Constructors
 Timer::Timer()
@@ -28,8 +27,10 @@ Timer::Timer()
     accumulated_V = 0;
     done_V = false;
     type_V = TON;
+    autoUpdate_V = true;
 }
-Timer::Timer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime)
+
+Timer::Timer(TIMER_TYPE timerType, TimerTimeDataType presetTime)
 {
     preset_V = presetTime;
     enable_V = false;
@@ -37,9 +38,10 @@ Timer::Timer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime)
     accumulated_V = 0;
     done_V = false;
     type_V = timerType;
+    autoUpdate_V = true;
 }
 
-Timer::Timer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime, bool enableTimer)
+Timer::Timer(TIMER_TYPE timerType, TimerTimeDataType presetTime, bool enableTimer)
 {
     preset_V = presetTime;
     enable_V = enableTimer;
@@ -47,7 +49,20 @@ Timer::Timer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime, bool enabl
     accumulated_V = 0;
     done_V = false;
     type_V = timerType;
+    autoUpdate_V = true;
 }
+
+Timer::Timer(TIMER_TYPE timerType, TimerTimeDataType presetTime, bool enableTimer, bool autoUpdate)
+{
+    preset_V = presetTime;
+    enable_V = enableTimer;
+    startTime_V = 0;
+    accumulated_V = 0;
+    done_V = false;
+    type_V = timerType;
+    autoUpdate_V = autoUpdate;
+}
+
 // Single MicroTimer Constructors
 MicroTimer::MicroTimer()
 {
@@ -57,8 +72,9 @@ MicroTimer::MicroTimer()
     accumulated_V = 0;
     done_V = false;
     type_V = TON;
+    autoUpdate_V = true;
 }
-MicroTimer::MicroTimer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime)
+MicroTimer::MicroTimer(TIMER_TYPE timerType, TimerTimeDataType presetTime)
 {
     preset_V = presetTime;
     enable_V = false;
@@ -66,9 +82,10 @@ MicroTimer::MicroTimer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime)
     accumulated_V = 0;
     done_V = false;
     type_V = timerType;
+    autoUpdate_V = true;
 }
 
-MicroTimer::MicroTimer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime, bool enableTimer)
+MicroTimer::MicroTimer(TIMER_TYPE timerType, TimerTimeDataType presetTime, bool enableTimer)
 {
     preset_V = presetTime;
     enable_V = enableTimer;
@@ -76,6 +93,18 @@ MicroTimer::MicroTimer(TIMER_TYPE timerType, TimerOtherTimeDataType presetTime, 
     accumulated_V = 0;
     done_V = false;
     type_V = timerType;
+    autoUpdate_V = true;
+}
+
+MicroTimer::MicroTimer(TIMER_TYPE timerType, TimerTimeDataType presetTime, bool enableTimer, bool autoUpdate)
+{
+    preset_V = presetTime;
+    enable_V = enableTimer;
+    startTime_V = 0;
+    accumulated_V = 0;
+    done_V = false;
+    type_V = timerType;
+    autoUpdate_V = autoUpdate;
 }
 
 // Timer Arrays Contructors
@@ -88,7 +117,7 @@ void initializeTimers(Timer *timers, int numTimers)
     }
 }
 
-void initializeTimers(Timer *timers, int numTimers, TIMER_TYPE timerType, TimerOtherTimeDataType presetTime)
+void initializeTimers(Timer *timers, int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime)
 {
     for (int i = 0; i < numTimers; ++i)
     {
@@ -96,12 +125,21 @@ void initializeTimers(Timer *timers, int numTimers, TIMER_TYPE timerType, TimerO
     }
 }
 
-void initializeTimers(Timer *timers, int numTimers, TIMER_TYPE timerType, TimerOtherTimeDataType presetTime,
+void initializeTimers(Timer *timers, int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime,
                       bool enableTimer)
 {
     for (int i = 0; i < numTimers; ++i)
     {
         timers[i] = Timer(timerType, presetTime, enableTimer);
+    }
+}
+
+void initializeTimers(Timer *timers, int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime,
+                      bool enableTimer, bool autoUpdate)
+{
+    for (int i = 0; i < numTimers; ++i)
+    {
+        timers[i] = Timer(timerType, presetTime, enableTimer, autoUpdate);
     }
 }
 
@@ -114,7 +152,7 @@ void initializeMicroTimers(MicroTimer *timers, int numTimers)
     }
 }
 
-void initializeMicroTimers(MicroTimer *timers, int numTimers, TIMER_TYPE timerType, TimerOtherTimeDataType presetTime)
+void initializeMicroTimers(MicroTimer *timers, int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime)
 {
     for (int i = 0; i < numTimers; ++i)
     {
@@ -122,7 +160,7 @@ void initializeMicroTimers(MicroTimer *timers, int numTimers, TIMER_TYPE timerTy
     }
 }
 
-void initializeMicroTimers(MicroTimer *timers, int numTimers, TIMER_TYPE timerType, TimerOtherTimeDataType presetTime,
+void initializeMicroTimers(MicroTimer *timers, int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime,
                            bool enableTimer)
 {
     for (int i = 0; i < numTimers; ++i)
@@ -131,48 +169,69 @@ void initializeMicroTimers(MicroTimer *timers, int numTimers, TIMER_TYPE timerTy
     }
 }
 
+void initializeMicroTimers(MicroTimer *timers, int numTimers, TIMER_TYPE timerType, TimerTimeDataType presetTime,
+                           bool enableTimer, bool autoUpdate)
+{
+    for (int i = 0; i < numTimers; ++i)
+    {
+        timers[i] = MicroTimer(timerType, presetTime, enableTimer, autoUpdate);
+    }
+}
+
 // Getters and Setters, also has aliases
-void Timer::PRE(TimerOtherTimeDataType value)
+void Timer::PRE(TimerTimeDataType value)
 {
     preset_V = value;
 }
 
-TimerOtherTimeDataType Timer::PRE()
+TimerTimeDataType Timer::PRE()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return preset_V;
 }
 
-void Timer::preset(TimerOtherTimeDataType value)
+void Timer::preset(TimerTimeDataType value)
 {
     PRE(value);
 }
 
-TimerOtherTimeDataType Timer::preset()
+TimerTimeDataType Timer::preset()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return PRE();
 }
 
-void Timer::ACC(TimerOtherTimeDataType value)
+void Timer::ACC(TimerTimeDataType value)
 {
     accumulated_V = value;
 }
 
-TimerOtherTimeDataType Timer::ACC()
+TimerTimeDataType Timer::ACC()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return accumulated_V;
 }
 
-void Timer::accumulated(TimerOtherTimeDataType value)
+void Timer::accumulated(TimerTimeDataType value)
 {
     ACC(value);
 }
 
-TimerOtherTimeDataType Timer::accumulated()
+TimerTimeDataType Timer::accumulated()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return ACC();
 }
 
@@ -183,7 +242,10 @@ void Timer::EN(bool value)
 
 bool Timer::EN()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return enable_V;
 }
 
@@ -194,7 +256,10 @@ void Timer::enable(bool value)
 
 bool Timer::enable()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return EN();
 }
 
@@ -205,7 +270,10 @@ void Timer::TT(bool value)
 
 bool Timer::TT()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return timerTiming_V;
 }
 
@@ -216,7 +284,10 @@ void Timer::timerTiming(bool value)
 
 bool Timer::timerTiming()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return TT();
 }
 
@@ -227,7 +298,10 @@ void Timer::DN(bool value)
 
 bool Timer::DN()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return done_V;
 }
 
@@ -238,18 +312,24 @@ void Timer::done(bool value)
 
 bool Timer::done()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return DN();
 }
 
-void Timer::startTime(TimerStartTimeDataType value)
+void Timer::startTime(TimerTimeDataType value)
 {
     startTime_V = value;
 }
 
-TimerStartTimeDataType Timer::startTime()
+TimerTimeDataType Timer::startTime()
 {
-    updateTimer();
+    if (autoUpdate_V)
+    {
+        updateTimer();
+    }
     return startTime_V;
 }
 
@@ -260,18 +340,27 @@ void Timer::type(TIMER_TYPE value)
 
 TIMER_TYPE Timer::type()
 {
-    updateTimer();
     return type_V;
+}
+
+void Timer::autoUpdate(bool value)
+{
+    autoUpdate_V = value;
+}
+
+bool Timer::autoUpdate()
+{
+    return autoUpdate_V;
 }
 
 // Timer Updating logic
 
-bool Timer::isTimerDone(TimerStartTimeDataType currentTime)
+bool Timer::isTimerDone(TimerTimeDataType currentTime)
 {
     return (startTime_V + preset_V < currentTime);
 }
 
-void Timer::handleTONUpdate(TimerStartTimeDataType currentTime)
+void Timer::handleTONUpdate(TimerTimeDataType currentTime)
 {
     if (!enable_V)
     {
@@ -291,7 +380,7 @@ void Timer::handleTONUpdate(TimerStartTimeDataType currentTime)
     timerTiming_V = true;
 }
 
-void Timer::handleTOFUpdate(TimerStartTimeDataType currentTime)
+void Timer::handleTOFUpdate(TimerTimeDataType currentTime)
 {
     if (enable_V)
     {
@@ -312,7 +401,7 @@ void Timer::handleTOFUpdate(TimerStartTimeDataType currentTime)
     done_V = true;
 }
 
-void Timer::handleRTOUpdate(TimerStartTimeDataType currentTime)
+void Timer::handleRTOUpdate(TimerTimeDataType currentTime)
 {
     if (!enable_V)
     {
@@ -332,31 +421,30 @@ void Timer::handleRTOUpdate(TimerStartTimeDataType currentTime)
 }
 
 #if USE_EXTENDED_TIME
-TimerStartTimeDataType Timer::getTime()
+TimerTimeDataType Timer::getTime()
 {
     return extendedMillis();
 }
 
-TimerStartTimeDataType MicroTimer::getTime()
+TimerTimeDataType MicroTimer::getTime()
 {
     return extendedMicros();
 }
 #else
-TimerStartTimeDataType Timer::getTime()
+TimerTimeDataType Timer::getTime()
 {
-    return millis();
+    return plcMillis();
 }
 
-TimerStartTimeDataType MicroTimer::getTime()
+TimerTimeDataType MicroTimer::getTime()
 {
-    return micros();
+    return plcMicros();
 }
 #endif
 
 // Update a single timer based on the current time
-void Timer::updateTimer()
+void Timer::handleUpdateTimer(TimerTimeDataType currentTime)
 {
-    TimerStartTimeDataType currentTime = getTime();
     switch (type_V)
     {
     case TON: // Timer On Delay
@@ -373,7 +461,15 @@ void Timer::updateTimer()
     }
 }
 
-void Timer::handleTimerReset(TimerStartTimeDataType currentTime)
+void Timer::updateTimer()
+{
+    TimerTimeDataType currentTime = getTime();
+    handleUpdateTimer(currentTime);
+}
+
+
+
+void Timer::handleTimerReset(TimerTimeDataType currentTime)
 {
     startTime_V = currentTime;
     done_V = false;
@@ -383,14 +479,8 @@ void Timer::handleTimerReset(TimerStartTimeDataType currentTime)
 // Reset a single timer to its initial state
 void Timer::resetTimer()
 {
-    TimerStartTimeDataType currentTime = millis();
+    TimerTimeDataType currentTime = getTime();
     handleTimerReset(currentTime);
 }
-// Reset multiple timers
-void Timer::resetTimers(Timer *timers, int numTimers)
-{
-    for (int i = 0; i < numTimers; ++i)
-    {
-        timers[i].resetTimer();
-    }
-}
+
+
