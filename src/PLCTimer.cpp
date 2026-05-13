@@ -390,6 +390,13 @@ void Timer::handleTOFUpdate(TimerTimeDataType currentTime)
         timerTiming_V = false;
         return;
     }
+    if (!done_V)
+    {
+        startTime_V = currentTime;
+        accumulated_V = 0;
+        timerTiming_V = false;
+        return;
+    }
     if (isTimerDone(currentTime))
     {
         done_V = false;
